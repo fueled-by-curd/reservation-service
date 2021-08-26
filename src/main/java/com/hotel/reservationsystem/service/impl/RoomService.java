@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.service.impl;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.utils.BedInfo;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.repository.GuestRepository;

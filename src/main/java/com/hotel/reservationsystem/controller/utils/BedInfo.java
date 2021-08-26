@@ -1,4 +1,4 @@
-package com.hotel.reservationsystem.controller.models;
+package com.hotel.reservationsystem.controller.utils;
 
 public class BedInfo {
     private String bedInfo;

@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.service.impl;
 
-import com.hotel.reservationsystem.controller.models.DateReq;
+import com.hotel.reservationsystem.controller.utils.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
 import com.hotel.reservationsystem.service.model.BookingService;

@@ -1,11 +1,14 @@
 package com.hotel.reservationsystem.data.entity;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="GUEST")
@@ -14,12 +17,22 @@ public class Guest {
     @Column(name="GUEST_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long guestId;
+
     @Column(name="FIRST_NAME")
+    @NotBlank(message = "first name can't be left empty")
     private String firstName;
+
+
     @Column(name="LAST_NAME")
+    @NotBlank(message = "last name can't be left empty")
     private String lastName;
-    @Column(name="EMAIL_ADDRESS")
+
+
+    @Column(name="EMAIL_ADDRESS",unique = true)
+    @NotBlank(message = "email can't be left empty")
+    @Email(message = "invalid email format")
     private String emailAddress;
+
     @Column(name="ADDRESS")
     private String address;
     @Column(name="COUNTRY")

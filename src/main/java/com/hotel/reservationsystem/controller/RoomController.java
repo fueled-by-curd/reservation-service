@@ -1,16 +1,14 @@
 package com.hotel.reservationsystem.controller;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.utils.BedInfo;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
-import com.hotel.reservationsystem.data.repository.RoomRepository;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 /*

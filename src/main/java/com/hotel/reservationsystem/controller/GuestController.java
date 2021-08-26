@@ -6,10 +6,16 @@ import com.hotel.reservationsystem.service.model.BookingService;
 import com.hotel.reservationsystem.service.model.HotelGuestService;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -40,11 +46,16 @@ public class GuestController {
         return hotelGuestService.getAllGuestReservations(guestId);
     }
     @PostMapping
-    public ResponseEntity<Guest> addGuest(@RequestBody Guest guest){
+    public ResponseEntity<Object> addGuest(@Valid @RequestBody Guest guest){
 
         //System.out.println("inside post req");
+
         Guest res = hotelGuestService.createGuest(guest);
-        if(res == null ) return ResponseEntity.badRequest().build();
+        if(res == null ) {
+            Map<String, List<String>> body = new HashMap<>();
+            body.put("errors", List.of("email already taken"));
+            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        }
 
         return ResponseEntity.noContent().build();
     }

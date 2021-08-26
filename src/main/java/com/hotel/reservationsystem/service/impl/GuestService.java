@@ -6,6 +6,7 @@ import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
 import com.hotel.reservationsystem.data.repository.RoomRepository;
 import com.hotel.reservationsystem.service.model.HotelGuestService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,15 @@ public class GuestService implements HotelGuestService {
 
     @Override
     public Guest createGuest(Guest guest) {
-        return guestRepository.save(guest);
+
+        Guest g;
+        try {
+            g = guestRepository.save(guest);
+        }
+        catch(Exception e){
+            return null;
+        }
+        return g;
     }
 
     @Override
@@ -69,4 +78,6 @@ public class GuestService implements HotelGuestService {
         return g;
 
     }
+
+
 }

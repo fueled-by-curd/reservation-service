@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.service.model;
 
-import com.hotel.reservationsystem.controller.models.DateReq;
+import com.hotel.reservationsystem.controller.utils.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 
 import java.util.Optional;

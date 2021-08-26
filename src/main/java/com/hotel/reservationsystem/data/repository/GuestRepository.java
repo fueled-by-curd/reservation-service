@@ -12,4 +12,6 @@ public interface GuestRepository extends CrudRepository<Guest, Long> {
 
     @Override
     Optional<Guest> findById(Long aLong);
+
+    Optional<Guest> findByEmailAddress(String value);
 }

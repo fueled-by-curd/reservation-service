@@ -1,16 +1,12 @@
 package com.hotel.reservationsystem.tests.unit.controller;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
-import com.hotel.reservationsystem.controller.models.DateReq;
+import com.hotel.reservationsystem.controller.utils.BedInfo;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.entity.Reservation;
-import com.hotel.reservationsystem.data.entity.Room;
-import com.hotel.reservationsystem.service.model.HotelRoomService;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;

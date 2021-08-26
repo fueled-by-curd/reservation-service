@@ -1,7 +1,6 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
-import com.hotel.reservationsystem.controller.models.DateReq;
+import com.hotel.reservationsystem.controller.utils.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
@@ -21,7 +20,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
