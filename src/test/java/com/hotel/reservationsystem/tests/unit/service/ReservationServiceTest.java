@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.utils.DateReq;
+import com.hotel.reservationsystem.controller.dtos.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;

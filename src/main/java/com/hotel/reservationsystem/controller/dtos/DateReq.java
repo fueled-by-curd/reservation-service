@@ -1,4 +1,4 @@
-package com.hotel.reservationsystem.controller.utils;
+package com.hotel.reservationsystem.controller.dtos;
 
 import java.sql.Date;
 

@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.tests.unit.controller;
 
-import com.hotel.reservationsystem.controller.utils.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
@@ -111,14 +111,14 @@ public class RoomControllerTest {
         JSONObject dateUpdate = new JSONObject();
         dateUpdate.put("bedInfo", "2Q");
 
-        given(roomService.updateBed(any(BedInfo.class), any(Long.class)))
+        given(roomService.updateBed(any(BedReq.class), any(Long.class)))
                 .willReturn(Optional.empty());
         mvc.perform(patch("/api/v1/rooms/21/bed")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(dateUpdate.toString()))
                 .andExpect(status().isBadRequest());
 
-        given(roomService.updateBed(any(BedInfo.class), any(Long.class)))
+        given(roomService.updateBed(any(BedReq.class), any(Long.class)))
                 .willReturn(Optional.ofNullable(room));
         mvc.perform(patch("/api/v1/rooms/21/bed")
                         .contentType(MediaType.APPLICATION_JSON)

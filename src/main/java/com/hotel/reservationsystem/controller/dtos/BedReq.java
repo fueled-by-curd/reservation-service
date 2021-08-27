@@ -1,6 +1,6 @@
-package com.hotel.reservationsystem.controller.utils;
+package com.hotel.reservationsystem.controller.dtos;
 
-public class BedInfo {
+public class BedReq {
     private String bedInfo;
 
     public String getBedInfo() {

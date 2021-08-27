@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.controller;
 
-import com.hotel.reservationsystem.controller.utils.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
@@ -44,9 +44,9 @@ public class RoomController{
     }
 
     @PatchMapping("{roomId}/bed")
-    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId, @RequestBody BedInfo bedInfo){
+    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId, @RequestBody BedReq bedReq){
 
-        Optional<Room> res = hotelRoomService.updateBed(bedInfo, roomId);
+        Optional<Room> res = hotelRoomService.updateBed(bedReq, roomId);
         if(res.isEmpty()) return ResponseEntity.badRequest().build();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

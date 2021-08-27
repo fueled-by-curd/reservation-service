@@ -42,8 +42,11 @@ public class GuestService implements HotelGuestService {
         return reservationRepository.findByGuestId(guestId);
     }
 
+    /*
+    throw it to controller class
+     */
     @Override
-    public Guest createGuest(Guest guest) {
+    public Guest createGuest(Guest guest)  {
 
         Guest g;
         try {

@@ -117,7 +117,7 @@ public class GuestServiceTest {
     }
 
     @Test
-    public void createReservationTest(){
+    public void createGuestTest(){
 
         given(guestRepository.save(any(Guest.class))).willReturn(guest);
         Guest res = guestService.createGuest(guest);

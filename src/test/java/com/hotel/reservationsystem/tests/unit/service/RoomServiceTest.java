@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.utils.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
@@ -115,21 +115,21 @@ public class RoomServiceTest {
     }
     @Test
     public void updateBedTest(){
-        BedInfo bedInfo = new BedInfo();
-        bedInfo.setBedInfo("2Q");
+        BedReq bedReq = new BedReq();
+        bedReq.setBedInfo("2Q");
 
         given(roomRepository.findById(any(Long.class))).willReturn(Optional.empty());
-        Optional<Room> res = roomService.updateBed(bedInfo , 21);
+        Optional<Room> res = roomService.updateBed(bedReq, 21);
         assertThat(res.isEmpty()).isEqualTo(true);
 
         when(roomRepository.findById(21L)).thenReturn(Optional.of(room));
         given(roomRepository.save(any(Room.class))).willReturn(null);
 
-        res = roomService.updateBed(bedInfo , 21);
+        res = roomService.updateBed(bedReq, 21);
 
         verify(roomRepository, times(1)).save(any(Room.class));
         assertThat(res.isPresent()).isTrue();
-        assertThat(res.get().getBedInfo()).isEqualTo(bedInfo.getBedInfo());
+        assertThat(res.get().getBedInfo()).isEqualTo(bedReq.getBedInfo());
 
 
     }

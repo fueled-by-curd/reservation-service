@@ -1,7 +1,7 @@
 package com.hotel.reservationsystem.controller;
 
 import com.hotel.reservationsystem.data.entity.Reservation;
-import com.hotel.reservationsystem.controller.utils.DateReq;
+import com.hotel.reservationsystem.controller.dtos.DateReq;
 import com.hotel.reservationsystem.service.model.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
