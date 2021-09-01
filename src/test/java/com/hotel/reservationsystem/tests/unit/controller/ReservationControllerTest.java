@@ -137,14 +137,14 @@ public class ReservationControllerTest {
         JSONObject dateUpdate = new JSONObject();
         dateUpdate.put("reservationDate", "2021-02-12");
 
-        given(reservationService.updateReservationDate(any(DateReq.class), any(Long.class)))
+        given(reservationService.updateReservationDate(any(Date.class), any(Long.class)))
                 .willReturn(Optional.empty());
         mvc.perform(patch("/api/v1/reservations/1/date")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(dateUpdate.toString()))
                 .andExpect(status().isBadRequest());
 
-        given(reservationService.updateReservationDate(any(DateReq.class), any(Long.class)))
+        given(reservationService.updateReservationDate(any(Date.class), any(Long.class)))
                 .willReturn(Optional.ofNullable(reservation));
         mvc.perform(patch("/api/v1/reservations/1/date")
                         .contentType(MediaType.APPLICATION_JSON)

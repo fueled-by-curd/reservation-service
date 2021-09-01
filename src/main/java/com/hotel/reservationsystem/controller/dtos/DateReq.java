@@ -1,15 +1,21 @@
 package com.hotel.reservationsystem.controller.dtos;
 
+import com.hotel.reservationsystem.controller.utils.ValidDate;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 
+@Getter @Setter @NoArgsConstructor
 public class DateReq {
-    private Date reservationDate;
 
-    public Date getReservationDate() {
-        return reservationDate;
-    }
+    @NotBlank(message = "specify new date")
+    @ValidDate
+    private String reservationDate;
 
-    public void setReservationDate(Date reservationDate) {
-        this.reservationDate = reservationDate;
-    }
+
+
+
 }

@@ -8,6 +8,7 @@ import com.hotel.reservationsystem.data.repository.RoomRepository;
 import com.hotel.reservationsystem.service.model.HotelGuestService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -46,16 +47,8 @@ public class GuestService implements HotelGuestService {
     throw it to controller class
      */
     @Override
-    public Guest createGuest(Guest guest)  {
-
-        Guest g;
-        try {
-            g = guestRepository.save(guest);
-        }
-        catch(Exception e){
-            return null;
-        }
-        return g;
+    public Guest createGuest(Guest guest)throws DataIntegrityViolationException  {
+        return guestRepository.save(guest);
     }
 
     @Override

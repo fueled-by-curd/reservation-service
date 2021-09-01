@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 /*
@@ -44,7 +45,7 @@ public class RoomController{
     }
 
     @PatchMapping("{roomId}/bed")
-    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId, @RequestBody BedReq bedReq){
+    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId,@Valid @RequestBody BedReq bedReq){
 
         Optional<Room> res = hotelRoomService.updateBed(bedReq, roomId);
         if(res.isEmpty()) return ResponseEntity.badRequest().build();

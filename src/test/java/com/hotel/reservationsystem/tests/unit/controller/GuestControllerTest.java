@@ -20,7 +20,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -73,7 +76,7 @@ public class GuestControllerTest {
         json.put("country", guest.getCountry());
         json.put("state", guest.getState());
         json.put("address", guest.getAddress());
-        json.put("email", guest.getEmailAddress());
+        json.put("emailAddress", guest.getEmailAddress());
         json.put("phoneNumber", guest.getPhoneNumber());
     }
 
@@ -100,10 +103,12 @@ public class GuestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("guestId", is((int)guest.getGuestId())));
+        given(guestService.getGuestById(any(Long.class))).willReturn(java.util.Optional.empty());
 
         mvc.perform(get("/api/v1/guests/1234")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("No guest found with guestId:1234")));
 
     }
 
@@ -118,6 +123,16 @@ public class GuestControllerTest {
         r.setRoomId(21);
 
         List<Reservation> reservations = Arrays.asList(r);
+
+        given(guestService.getGuestById(1234)).willReturn(Optional.empty());
+
+        mvc.perform(get("/api/v1/guests/1234/reservations")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("No guest found with guestId:1234")));
+
+
+        given(guestService.getGuestById(1334)).willReturn(Optional.of(guest));
 
         given(guestService.getAllGuestReservations(1334)).willReturn(reservations);
 
@@ -141,14 +156,12 @@ public class GuestControllerTest {
                 //.andDo(print())
                 .andExpect(status().isNoContent());
 
-        given(guestService.createGuest(any(Guest.class))).willReturn(null);
+        given(guestService.createGuest(any(Guest.class))).willThrow(DataIntegrityViolationException.class);
         mvc.perform(post("/api/v1/guests")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.toString()))
-                //.andDo(print())
-                .andExpect(status().isBadRequest());
-
-
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("email already taken")));
     }
 
     @Test
@@ -157,8 +170,10 @@ public class GuestControllerTest {
         given(guestService.getGuestById(any(Long.class))).willReturn(Optional.empty());
         mvc.perform(delete("/api/v1/guests/1334"))
                 //.andDo(print())
-                .andExpect(status().isBadRequest());
-        given(guestService.getGuestById(any(Long.class))).willReturn(java.util.Optional.ofNullable(guest));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("No guest found with guestId:1334")));
+
+        given(guestService.getGuestById(any(Long.class))).willReturn(java.util.Optional.of(guest));
         doNothing().when(guestService).deleteGuest(isA(Long.class));
 
         mvc.perform(delete("/api/v1/guests/1334"))
@@ -169,15 +184,19 @@ public class GuestControllerTest {
 
     @Test
     public void updateGuestTest()throws Exception{
-        given(guestService.updateGuestInfo(any(Guest.class), any(Long.class)))
-                .willReturn(Optional.empty());
+
+        given(guestService.getGuestById(any(Long.class))).willReturn(Optional.empty());
+
         mvc.perform(put("/api/v1/guests/1334")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.toString()))
-                //.andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error", is("No guest found with guestId:1334")));
+
 
         //testing with a proper input
+        given(guestService.getGuestById(any(Long.class))).willReturn(Optional.of(guest));
+
         given(guestService.updateGuestInfo(any(Guest.class), any(Long.class)))
                 .willReturn(Optional.ofNullable(guest));
 
@@ -185,6 +204,7 @@ public class GuestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.toString()))
                 .andExpect(status().isAccepted());
+
 
     }
 
