@@ -88,14 +88,13 @@ public class ReservationController {
         Map<String, String> body = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        Date date = null;
+        Date date ;
         try{
             date = sdf.parse(dateReq.getReservationDate());
         }
         catch (ParseException e){
             body.put("error","something went wrong. try again later");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-
         }
 
 

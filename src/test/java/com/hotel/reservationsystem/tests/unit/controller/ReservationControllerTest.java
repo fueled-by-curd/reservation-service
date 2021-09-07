@@ -12,11 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class ReservationControllerTest {
         reservation.setReservationId(1);
         reservation.setGuestId(1334);
         reservation.setRoomId(21);
-        reservation.setReservationDate(new Date( new java.util.Date().getTime()));
+        reservation.setReservationDate(new java.sql.Date( new java.util.Date().getTime()));
 
         json = new JSONObject();
         json.put("roomId" , reservation.getRoomId());
@@ -87,9 +88,11 @@ public class ReservationControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("reservationId", is((int)reservation.getReservationId())));
 
-        mvc.perform(get("/api/v1/reservations/12")
+        given(reservationService.getReservationById(21)).willReturn(java.util.Optional.empty());
+
+        mvc.perform(get("/api/v1/reservations/21")
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
 
     }
 
@@ -122,7 +125,7 @@ public class ReservationControllerTest {
                 //.andDo(print())
                 .andExpect(status().isNoContent());
 
-        given(reservationService.createReservation(any(Reservation.class))).willReturn(null);
+        given(reservationService.createReservation(any(Reservation.class))).willThrow(DataIntegrityViolationException.class);
         mvc.perform(post("/api/v1/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.toString()))
@@ -137,6 +140,18 @@ public class ReservationControllerTest {
         JSONObject dateUpdate = new JSONObject();
         dateUpdate.put("reservationDate", "2021-02-12");
 
+        Optional<Reservation> ret = Optional.of(reservation);
+        given(reservationService.updateReservationDate(any(Date.class), any(Long.class)))
+                .willReturn(ret);
+
+        //doReturn(Optional.of(reservation)).when(reservationService).updateReservationDate(any(Date.class), any(Long.class));
+
+
+        mvc.perform(patch("/api/v1/reservations/1/date")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dateUpdate.toString()))
+                .andExpect(status().isCreated());
+
         given(reservationService.updateReservationDate(any(Date.class), any(Long.class)))
                 .willReturn(Optional.empty());
         mvc.perform(patch("/api/v1/reservations/1/date")
@@ -144,12 +159,7 @@ public class ReservationControllerTest {
                 .content(dateUpdate.toString()))
                 .andExpect(status().isBadRequest());
 
-        given(reservationService.updateReservationDate(any(Date.class), any(Long.class)))
-                .willReturn(Optional.ofNullable(reservation));
-        mvc.perform(patch("/api/v1/reservations/1/date")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(dateUpdate.toString()))
-                .andExpect(status().isCreated());
+
 
 
     }
