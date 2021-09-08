@@ -1,5 +1,6 @@
 package com.hotel.reservationsystem.controller.utils;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,5 +38,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class} )
+    public ResponseEntity<Object> handleDIC(ConstraintViolationException e){
+        Map<String, String> body = new HashMap<>();
+
+        if(e.getSQLException().getErrorCode() == 23505){
+            body.put("error", "room is already booked");
+        }
+        else
+        {
+            body.put("error", "guest and/or room not found");
+        }
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }

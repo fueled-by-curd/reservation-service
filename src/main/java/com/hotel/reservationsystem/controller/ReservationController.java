@@ -5,14 +5,17 @@ import com.hotel.reservationsystem.data.entity.Guest;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.controller.dtos.DateReq;
 import com.hotel.reservationsystem.service.model.BookingService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NestedExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +54,7 @@ public class ReservationController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> makeReservation(@Valid @RequestBody ReservationReq req){
+    public ResponseEntity<Object> makeReservation(@Valid @RequestBody ReservationReq req) throws Throwable {
 
         Reservation reservation = modelMapper.map(req, Reservation.class);
 
@@ -60,11 +63,10 @@ public class ReservationController {
         try {
             Reservation res = bookingService.createReservation(reservation);
         }
-        catch(DataIntegrityViolationException e ) {
-            body.put("error", "guest and/or room not found");
-            return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
-        }
 
+        catch(DataIntegrityViolationException err) {
+            throw err.getCause();
+        }
         return ResponseEntity.noContent().build();
 
     }
