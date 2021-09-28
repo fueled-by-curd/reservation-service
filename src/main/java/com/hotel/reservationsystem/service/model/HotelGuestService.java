@@ -15,5 +15,7 @@ public interface HotelGuestService {
 
     Optional<Guest> updateGuestInfo(Guest guest,long guestId);
 
+    Iterable<Guest> findByName(String name);
+
 
 }

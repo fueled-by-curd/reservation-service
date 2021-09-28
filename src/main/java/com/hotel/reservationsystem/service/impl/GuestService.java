@@ -27,6 +27,7 @@ public class GuestService implements HotelGuestService {
         this.reservationRepository = reservationRepository;
     }
 
+
     @Override
     public Iterable<Guest> getAllGuests() {
         return guestRepository.findAll();
@@ -72,6 +73,14 @@ public class GuestService implements HotelGuestService {
         guestRepository.save(g.get());
 
         return g;
+
+    }
+
+    @Override
+    public Iterable<Guest> findByName(String name) {
+
+        Iterable<Guest> fName = guestRepository.findByFirstName(name);
+        return fName;
 
     }
 

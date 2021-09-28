@@ -4,6 +4,7 @@ import com.hotel.reservationsystem.controller.dtos.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.service.model.BookingService;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Arrays;
 import java.util.List;
@@ -125,7 +127,12 @@ public class ReservationControllerTest {
                 //.andDo(print())
                 .andExpect(status().isNoContent());
 
-        given(reservationService.createReservation(any(Reservation.class))).willThrow(DataIntegrityViolationException.class);
+        SQLException sqlEx = new SQLException("argh", "27");
+        ConstraintViolationException jdbcEx = new ConstraintViolationException("", sqlEx, null);
+        DataIntegrityViolationException ex = new DataIntegrityViolationException("", jdbcEx);
+
+
+        given(reservationService.createReservation(any(Reservation.class))).willThrow(ex);
         mvc.perform(post("/api/v1/reservations")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json.toString()))

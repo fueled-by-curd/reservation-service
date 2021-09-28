@@ -98,8 +98,6 @@ public class ReservationController {
             body.put("error","something went wrong. try again later");
             return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
         }
-
-
         Optional<Reservation> res = bookingService.updateReservationDate(date, bookingId);
         if(res.isEmpty()) {
             body.put("error","No reservation found with reservationId:" + bookingId);

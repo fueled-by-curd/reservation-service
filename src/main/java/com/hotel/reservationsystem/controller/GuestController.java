@@ -107,4 +107,12 @@ public class GuestController {
 
         return ResponseEntity.accepted().body(res.get());
     }
+
+    @GetMapping("/namefetch")
+    public ResponseEntity<Object> findGuestByName(@RequestParam("name") String name){
+
+        System.out.println("Inside findByName");
+        Iterable<Guest> res = hotelGuestService.findByName(name);
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 }
