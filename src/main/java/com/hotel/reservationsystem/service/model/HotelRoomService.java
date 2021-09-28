@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.service.model;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 
@@ -11,5 +11,5 @@ public interface HotelRoomService {
     Iterable<Reservation> getAllRoomReservations(long roomId);
     Iterable<Room> getAllRooms();
 
-    Optional<Room> updateBed(BedInfo bedInfo, long roomId);
+    Optional<Room> updateBed(BedReq bedReq, long roomId);
 }

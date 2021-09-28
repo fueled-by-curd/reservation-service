@@ -1,7 +1,6 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
-import com.hotel.reservationsystem.controller.models.DateReq;
+import com.hotel.reservationsystem.controller.dtos.DateReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
@@ -16,12 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -53,7 +51,7 @@ public class ReservationServiceTest {
         reservation.setReservationId(1);
         reservation.setGuestId(1334);
         reservation.setReservationId(21);
-        reservation.setReservationDate(new Date( new java.util.Date().getTime()));
+        reservation.setReservationDate(new java.sql.Date( new Date().getTime()) );
     }
 
     @Test
@@ -88,15 +86,7 @@ public class ReservationServiceTest {
 
     @Test
     public void updateBedTest(){
-        DateReq dateReq = new DateReq();
-
-        LocalDate date = LocalDate.of (2020,12,19);
-
-
-        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
-        long epoch = date.atStartOfDay(zoneId).toEpochSecond();
-        dateReq.setReservationDate(new Date(epoch));
-
+        Date dateReq = new Date();
 
         given(reservationRepository.findById(any(Long.class))).willReturn(Optional.empty());
         Optional<Reservation> res = reservationService.updateReservationDate(dateReq , 21);
@@ -109,7 +99,7 @@ public class ReservationServiceTest {
 
         verify(reservationRepository, times(1)).save(any(Reservation.class));
         assertThat(res.isPresent()).isTrue();
-        assertThat(res.get().getReservationDate()).isEqualTo(dateReq.getReservationDate());
+        assertThat(res.get().getReservationDate()).isEqualTo(dateReq);
 
 
     }

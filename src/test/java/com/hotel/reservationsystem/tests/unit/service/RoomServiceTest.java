@@ -1,28 +1,22 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
 import com.hotel.reservationsystem.data.repository.RoomRepository;
-import com.hotel.reservationsystem.service.impl.RoomService;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +29,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @ActiveProfiles("test")
@@ -122,21 +115,21 @@ public class RoomServiceTest {
     }
     @Test
     public void updateBedTest(){
-        BedInfo bedInfo = new BedInfo();
-        bedInfo.setBedInfo("2Q");
+        BedReq bedReq = new BedReq();
+        bedReq.setBedInfo("2Q");
 
         given(roomRepository.findById(any(Long.class))).willReturn(Optional.empty());
-        Optional<Room> res = roomService.updateBed(bedInfo , 21);
+        Optional<Room> res = roomService.updateBed(bedReq, 21);
         assertThat(res.isEmpty()).isEqualTo(true);
 
         when(roomRepository.findById(21L)).thenReturn(Optional.of(room));
         given(roomRepository.save(any(Room.class))).willReturn(null);
 
-        res = roomService.updateBed(bedInfo , 21);
+        res = roomService.updateBed(bedReq, 21);
 
         verify(roomRepository, times(1)).save(any(Room.class));
         assertThat(res.isPresent()).isTrue();
-        assertThat(res.get().getBedInfo()).isEqualTo(bedInfo.getBedInfo());
+        assertThat(res.get().getBedInfo()).isEqualTo(bedReq.getBedInfo());
 
 
     }

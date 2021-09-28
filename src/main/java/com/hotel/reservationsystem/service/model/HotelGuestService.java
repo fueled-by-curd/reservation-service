@@ -14,4 +14,8 @@ public interface HotelGuestService {
     void deleteGuest(long guestId);
 
     Optional<Guest> updateGuestInfo(Guest guest,long guestId);
+
+    Iterable<Guest> findByName(String name);
+
+
 }

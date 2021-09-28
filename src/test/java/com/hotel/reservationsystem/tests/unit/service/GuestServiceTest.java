@@ -1,13 +1,9 @@
 package com.hotel.reservationsystem.tests.unit.service;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
 import com.hotel.reservationsystem.data.entity.Guest;
 import com.hotel.reservationsystem.data.entity.Reservation;
-import com.hotel.reservationsystem.data.entity.Guest;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
-import com.hotel.reservationsystem.data.repository.GuestRepository;
-import com.hotel.reservationsystem.service.model.HotelGuestService;
 import com.hotel.reservationsystem.service.model.HotelGuestService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -121,7 +117,7 @@ public class GuestServiceTest {
     }
 
     @Test
-    public void createReservationTest(){
+    public void createGuestTest(){
 
         given(guestRepository.save(any(Guest.class))).willReturn(guest);
         Guest res = guestService.createGuest(guest);

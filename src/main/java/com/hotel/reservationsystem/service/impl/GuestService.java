@@ -6,7 +6,9 @@ import com.hotel.reservationsystem.data.repository.GuestRepository;
 import com.hotel.reservationsystem.data.repository.ReservationRepository;
 import com.hotel.reservationsystem.data.repository.RoomRepository;
 import com.hotel.reservationsystem.service.model.HotelGuestService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -25,6 +27,7 @@ public class GuestService implements HotelGuestService {
         this.reservationRepository = reservationRepository;
     }
 
+
     @Override
     public Iterable<Guest> getAllGuests() {
         return guestRepository.findAll();
@@ -41,8 +44,11 @@ public class GuestService implements HotelGuestService {
         return reservationRepository.findByGuestId(guestId);
     }
 
+    /*
+    throw it to controller class
+     */
     @Override
-    public Guest createGuest(Guest guest) {
+    public Guest createGuest(Guest guest)throws DataIntegrityViolationException  {
         return guestRepository.save(guest);
     }
 
@@ -69,4 +75,14 @@ public class GuestService implements HotelGuestService {
         return g;
 
     }
+
+    @Override
+    public Iterable<Guest> findByName(String name) {
+
+        Iterable<Guest> fName = guestRepository.findByFirstName(name);
+        return fName;
+
+    }
+
+
 }

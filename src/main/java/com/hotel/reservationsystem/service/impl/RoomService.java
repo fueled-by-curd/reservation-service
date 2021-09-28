@@ -1,6 +1,6 @@
 package com.hotel.reservationsystem.service.impl;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
 import com.hotel.reservationsystem.data.repository.GuestRepository;
@@ -41,12 +41,12 @@ public class RoomService implements HotelRoomService {
     }
 
     @Override
-    public Optional<Room> updateBed(BedInfo bedInfo, long roomId) {
+    public Optional<Room> updateBed(BedReq bedReq, long roomId) {
         Optional<Room> res = roomRepository.findById(roomId);
 
         if(res.isEmpty()) return res;
 
-        res.get().setBedInfo(bedInfo.getBedInfo());
+        res.get().setBedInfo(bedReq.getBedInfo());
         roomRepository.save(res.get());
         return res;
     }

@@ -1,16 +1,15 @@
 package com.hotel.reservationsystem.controller;
 
-import com.hotel.reservationsystem.controller.models.BedInfo;
+import com.hotel.reservationsystem.controller.dtos.BedReq;
 import com.hotel.reservationsystem.data.entity.Reservation;
 import com.hotel.reservationsystem.data.entity.Room;
-import com.hotel.reservationsystem.data.repository.RoomRepository;
 import com.hotel.reservationsystem.service.model.HotelRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
+import javax.validation.Valid;
 import java.util.Optional;
 
 /*
@@ -46,9 +45,9 @@ public class RoomController{
     }
 
     @PatchMapping("{roomId}/bed")
-    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId, @RequestBody BedInfo bedInfo){
+    public ResponseEntity<Room> updateBedInfo(@PathVariable("roomId") long roomId,@Valid @RequestBody BedReq bedReq){
 
-        Optional<Room> res = hotelRoomService.updateBed(bedInfo, roomId);
+        Optional<Room> res = hotelRoomService.updateBed(bedReq, roomId);
         if(res.isEmpty()) return ResponseEntity.badRequest().build();
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
